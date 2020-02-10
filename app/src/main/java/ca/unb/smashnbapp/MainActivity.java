@@ -1,5 +1,6 @@
 package ca.unb.smashnbapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -8,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        ApiHandler apiBoi = new ApiHandler();
+        apiBoi.addParticipant(this, "TESTPARTICIPANT1");
+        apiBoi.addParticipant(this, "TESTPARTICIPANT2");
+        apiBoi.addParticipant(this, "TESTPARTICIPANT3");
+        apiBoi.addParticipant(this, "TESTPARTICIPANT4");
+        apiBoi.randomizeSeeds(this);
     }
 
     @Override
