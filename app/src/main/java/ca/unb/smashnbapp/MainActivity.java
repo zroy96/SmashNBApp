@@ -32,10 +32,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Intent apiIntent = new Intent();
-        apiIntent.setClass(this, ApiCaller.class);
-        //apiIntent.putExtra("url", request); THIS IS HOW YOU PASS EXTRA SHIT TO THE API CALLER
-        startService(apiIntent);
+        ApiHandler apiBoi = new ApiHandler();
+        apiBoi.addParticipant(this, "TESTPARTICIPANT1");
+        apiBoi.addParticipant(this, "TESTPARTICIPANT2");
+        apiBoi.addParticipant(this, "TESTPARTICIPANT3");
+        apiBoi.addParticipant(this, "TESTPARTICIPANT4");
+        apiBoi.randomizeSeeds(this);
     }
 
     @Override
