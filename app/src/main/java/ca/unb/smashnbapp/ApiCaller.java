@@ -21,11 +21,11 @@ public class ApiCaller extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         this.intent = intent;
-        int responseCd = addParticipant();
+        int responseCd = makeCall();
         Log.d("API CALLER RESPONSE", Integer.toString(responseCd));
     }
 
-    public int addParticipant(){
+    public int makeCall(){
         int responseCode = 0;
         String request = intent.getStringExtra("requestUrl");
         try{
@@ -35,9 +35,10 @@ public class ApiCaller extends IntentService {
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
             responseCode = conn.getResponseCode();
+            conn.disconnect();
         }
         catch (IOException e){
-            Log.d("API_CALLER_ERROR", "addParticipant failure", e);
+            Log.d("API_CALLER_ERROR", "makeCall failure", e);
         }
         return responseCode;
     }
