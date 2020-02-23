@@ -21,6 +21,7 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(main, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
+        apiIntent.putExtra("type", "POST");
         main.startService(apiIntent);
     }
 
@@ -29,6 +30,18 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(main, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
+        apiIntent.putExtra("type", "POST");
+        main.startService(apiIntent);
+    }
+
+    public void viewBracket(Context main){
+        String request = BASEURL + "tournaments/" + TOURNAMENT + ".json" + "?api_key=" + API_KEY;
+        Intent apiIntent = new Intent();
+        apiIntent.setClass(main, ApiCaller.class);
+        apiIntent.putExtra("requestUrl", request);
+        apiIntent.putExtra("type", "GET");
+        String[] headers = {"live_image_url"};
+        apiIntent.putExtra("responseHeaders", headers);
         main.startService(apiIntent);
     }
 
