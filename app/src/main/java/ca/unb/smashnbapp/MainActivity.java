@@ -2,7 +2,6 @@ package ca.unb.smashnbapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,8 +16,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private final Location MIRAMICHI = new Location("ur mom");
     private final Location BATHURST = new Location("ur mom");
 
+    final ApiHandler apiBoi = new ApiHandler(this, "Fredericton");
+
     private String currentCity = "nowhere";
 
     private double currentLatitude = 0.0;
@@ -64,22 +64,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        //might want to make these calls in the onLocationResult, so we know that we have our location.
-        ApiHandler apiBoi = new ApiHandler(this, currentCity);
         apiBoi.addParticipant(this, "TESTPARTICIPANT1");
-        apiBoi.addParticipant(this, "TESTPARTICIPANT2");
-        apiBoi.addParticipant(this, "TESTPARTICIPANT3");
-        apiBoi.addParticipant(this, "TESTPARTICIPANT4");
-        apiBoi.randomizeSeeds(this);
 
         fusedLocClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -109,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         getLastLocation();
 
         Button cityButton = findViewById(R.id.cityButton);
-        cityText = findViewById(R.id.cityButton);
+        cityText = findViewById(R.id.cityTextView);
 
         /*
         cityButton.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +105,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
+
+        //REGISTER PARTICIPANT FEATURE
+        final TextInputEditText tagInput = findViewById(R.id.tagInput);
+        Button signUpButton = findViewById(R.id.signUpButton);
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String tag = String.valueOf(tagInput.getText());
+                Log.d("TAG111", "tag?" + tag);
+                apiBoi.addParticipant(MainActivity.this, tag);
+            }
+        });
+
+
+        //VIEW TOURNAMENT FEATURE
+        Button showBracketButton = findViewById(R.id.showBracketButton);
+        showBracketButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                apiBoi.viewBracket(MainActivity.this);
+            }
+        });
+
+        //URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
+        //Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        //imageView.setImageBitmap(bmp);
     }
 
     @Override
