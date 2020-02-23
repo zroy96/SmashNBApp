@@ -73,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ApiHandler apiBoi = new ApiHandler();
+        //might want to make these calls in the onLocationResult, so we know that we have our location.
+        ApiHandler apiBoi = new ApiHandler(this, currentCity);
         apiBoi.addParticipant(this, "TESTPARTICIPANT1");
         apiBoi.addParticipant(this, "TESTPARTICIPANT2");
         apiBoi.addParticipant(this, "TESTPARTICIPANT3");
