@@ -34,7 +34,6 @@ public class ApiHandler{
         apiIntent.setClass(main, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
         apiIntent.putExtra("method", "POST");
-        apiIntent.putExtra("json", true);
         main.startService(apiIntent);
     }
 
@@ -55,20 +54,11 @@ public class ApiHandler{
         apiIntent.setClass(main, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
         apiIntent.putExtra("method", "GET");
-        apiIntent.putExtra("json", true);
         main.startService(apiIntent);
+
         //TODO: get back json and game tournament names until it matches the right one for the city
         //use switch to set search string
-    }
 
-    public void viewBracket(Context main){
-        String request = BASEURL + "tournaments/" + TOURNAMENT + ".json" + "?api_key=" + API_KEY;
-        Intent apiIntent = new Intent();
-        apiIntent.setClass(main, ApiCaller.class);
-        apiIntent.putExtra("requestUrl", request);
-        apiIntent.putExtra("type", "GET");
-        apiIntent.putExtra("json", true);
-        main.startService(apiIntent);
     }
 
 }
