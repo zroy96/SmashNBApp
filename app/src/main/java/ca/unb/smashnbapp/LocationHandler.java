@@ -36,9 +36,9 @@ import java.util.Locale;
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 
-
-// NOT USING THIS CLASS RIGHT NOW
-
+//*************************************************
+// *********NOT USING THIS CLASS RIGHT NOW*********
+//*************************************************
 
 public class LocationHandler  extends AppCompatActivity {
     public boolean enteredTournament = false; //set to true to prevent location from being updated while gamering
