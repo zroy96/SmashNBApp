@@ -66,12 +66,12 @@ public class ApiCaller extends IntentService {
 
 
 
-    private String getField(HttpURLConnection connection, String field){ //THIS IS A SHORTCUT THAT COULD RETURN A WRONG STRING IF A TOURNAMENT/PARTICIPANT SETS THEIR NAME TO A RESPONSE HEADER
+    private String getField(HttpURLConnection connection, String field){
         String buffer = "error?";
         try {
             InputStream in = connection.getInputStream();
             Scanner scan = new Scanner(in);
-            scan.useDelimiter(field);
+            scan.useDelimiter("\"" + field + "\"");
             buffer = scan.next();
             scan.useDelimiter(",");
             buffer = scan.next();
