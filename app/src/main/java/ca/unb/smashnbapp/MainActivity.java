@@ -37,11 +37,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private boolean enteredTournament = false; //set to true to prevent location from being updated while gamering
+    public boolean tournamentStarted = false;
+    public String roundName = "";
+    public String nextOpponent = "";
     private long UPDATE_INTERVAL = 5 * 1000;
     private long FASTEST_INTERVAL = 2000;
     private final int PERMISSION_ID = 69;
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     final ApiHandler apiBoi = new ApiHandler(this, "Fredericton");
 
-    private String currentCity = "nowhere";
+    private String currentCity = "FRED"; //default for now
 
     private double currentLatitude = 0.0;
     private double currentLongitude = 0.0;
@@ -72,40 +76,107 @@ public class MainActivity extends AppCompatActivity {
             Log.d("onReceive", "Broadcast Received");
             int responseCode = intent.getIntExtra("responseCode", 0);
             String endPoint = intent.getStringExtra("endPoint");
+            String type = intent.getStringExtra("type");
             String method = intent.getStringExtra("method");
             String json = intent.getStringExtra("json");
+            Log.d("responseCode: ", "" + responseCode);
+            Log.d("endPoint: ", endPoint);
+            Log.d("type: ", type);
 
             JSONObject reader;
-            JSONObject object;
+            JSONObject jsonObject;
+            JSONArray jsonArray;
 
             try {
                 reader = new JSONObject(json);
-                object = reader.getJSONObject(endPoint);
                 switch(endPoint)
                 {
-                    case "participant": {
-                        if(method.equalsIgnoreCase("post")) {
+                    case "participant":
+                        jsonObject = reader.getJSONObject(endPoint);
+                        if(type.equalsIgnoreCase("post")) {
                             //need to get participant id
-                            participantID = Integer.parseInt(object.getString("id"));
+                            participantID = Integer.parseInt(jsonObject.getString("id"));
                             Log.d("partcipantID", "" + participantID);
                         }
-                        else if(method.equalsIgnoreCase("get")){
+                        else if(type.equalsIgnoreCase("get")){
                             //get whatever
                         }
                         break;
-                    }
 
-                    case "tournament":{
-                        //TODO: need to distinguish between get 1 and get all
+
+                    case "tournament":
+
+                        switch(method){
+                            case "findTournamentName":
+                                jsonArray = new JSONArray(json);
+                                String titleSnipit = "";
+                                switch(currentCity) {
+                                    case "FRED":
+                                        titleSnipit = "guard";
+                                        break;
+                                    case "MONC":
+                                        titleSnipit = "hub";
+                                        break;
+                                    case "SJ":
+                                        titleSnipit = "port";
+                                        break;
+                                    case "BATH":
+                                        titleSnipit = "bathurst";
+                                        break;
+                                    case "MIRA":
+                                        titleSnipit = "miramichi";
+                                        break;
+                                }
+                                boolean found = false;
+                                String tourneyName = "";
+                                for(int i = 0; i < jsonArray.length() && !found; i++){
+                                    jsonObject = jsonArray.getJSONObject(i);
+                                    tourneyName = jsonObject.getString("name");
+                                    if(tourneyName.contains(titleSnipit)){
+                                        apiBoi.TOURNAMENT = tourneyName;
+                                        apiBoi.tournamentId = jsonObject.getString("id");
+                                        found = true;
+                                    }
+                                }
+                                break; //end findTournamentName method
+
+                            case "checkTournamentStarted":
+                                jsonObject = reader.getJSONObject(endPoint);
+                                String started = jsonObject.getString("state");
+                                if(started.equalsIgnoreCase("underway")){
+                                    tournamentStarted = true;
+                                    //TODO: now we can show their next match
+                                }
+
+                                break; // end checkTournamentStarted method
+                        }
+                        break; //end tournament endpoint
+
+                    case "match":
+                        //for seeing upcoming matches, reporting scores, etc.
+                        //these methods will only be called if the tournament has started
+                        jsonArray = new JSONArray(json);
+                        boolean found = false;
+                        String player1Id;
+                        String player2Id;
+                        for(int i = 0; i < jsonArray.length() && !found; i++){
+                            jsonObject = jsonArray.getJSONObject(i);
+                            player1Id = jsonObject.getString("player1_id");
+                            player2Id = jsonObject.getString("player2_id");
+                            if(player1Id.equalsIgnoreCase(participantID + "")
+                            || player2Id.equalsIgnoreCase(participantID + "")){
+                                found = true;
+                                //determine what round (ex: losers R1, wieners semis)
+                            }
+                        }
+                        if(!found)
+                            //Log.d()
                         break;
-                    }
-
-                    //add other endpoints if need (ex: match)
 
                     default:
                         throw new IllegalStateException("Unexpected endPoint in onReceive: " + endPoint);
-                }
-            } catch (JSONException e) {
+                } //end switch on endpoint
+            } catch (JSONException e) { //whole thing in try block because json
                 e.printStackTrace();
             }
 
@@ -119,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        apiBoi.addParticipant(this, "57577587587587");
+        apiBoi.addParticipant("57577587587587");
 
         fusedLocClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -148,8 +219,8 @@ public class MainActivity extends AppCompatActivity {
 
         //getLastLocation();
 
-        Button cityButton = findViewById(R.id.cityButton);
-        cityText = findViewById(R.id.cityTextView);
+        /*Button cityButton = findViewById(R.id.cityButton);
+        cityText = findViewById(R.id.cityTextView);*/
 
         /*
         cityButton.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String tag = String.valueOf(tagInput);
                 Log.d("TAG111", "tag?" + tag);
-                apiBoi.addParticipant(MainActivity.this, tag);
+                apiBoi.addParticipant(tag);
             }
         });
 
@@ -179,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
         showBracketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apiBoi.viewBracket(MainActivity.this);
+                apiBoi.getTournamentByName("viewBracket");
             }
         });
 
