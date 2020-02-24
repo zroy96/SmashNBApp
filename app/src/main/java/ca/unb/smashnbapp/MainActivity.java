@@ -89,9 +89,11 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 reader = new JSONObject(json);
-                switch(endPoint)
-                {
-                    case "participant":
+                switch(method){
+
+                    // PARTICIPANT METHODS
+
+                    case "addParticipant":
                         jsonObject = reader.getJSONObject(endPoint);
                         if(type.equalsIgnoreCase("post")) {
                             //need to get participant id
@@ -103,60 +105,65 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
 
+                    // TOURNAMENT METHODS
 
-                    case "tournament":
-
-                        switch(method){
-                            case "findTournamentName":
-                                jsonArray = new JSONArray(json);
-                                String titleSnipit = "";
-                                switch(currentCity) {
-                                    case "FRED":
-                                        titleSnipit = "guard";
-                                        break;
-                                    case "MONC":
-                                        titleSnipit = "hub";
-                                        break;
-                                    case "SJ":
-                                        titleSnipit = "port";
-                                        break;
-                                    case "BATH":
-                                        titleSnipit = "bathurst";
-                                        break;
-                                    case "MIRA":
-                                        titleSnipit = "miramichi";
-                                        break;
-                                }
-                                boolean found = false;
-                                String tourneyName = "";
-                                for(int i = 0; i < jsonArray.length() && !found; i++){
-                                    jsonObject = jsonArray.getJSONObject(i);
-                                    tourneyName = jsonObject.getString("name");
-                                    if(tourneyName.contains(titleSnipit)){
-                                        apiBoi.TOURNAMENT = tourneyName;
-                                        apiBoi.tournamentId = jsonObject.getString("id");
-                                        found = true;
-                                    }
-                                }
-                                break; //end findTournamentName method
-
-                            case "checkTournamentStarted":
-                                jsonObject = reader.getJSONObject(endPoint);
-                                String started = jsonObject.getString("state");
-                                if(started.equalsIgnoreCase("underway")){
-                                    tournamentStarted = true;
-                                    //TODO: now we can show their next match
-                                }
-
-                                break; // end checkTournamentStarted method
+                    case "findTournamentName":
+                        jsonArray = new JSONArray(json);
+                        String titleSnipit = "";
+                        switch(currentCity) {
+                            case "FRED":
+                                titleSnipit = "guard";
+                                break;
+                            case "MONC":
+                                titleSnipit = "hub";
+                                break;
+                            case "SJ":
+                                titleSnipit = "port";
+                                break;
+                            case "BATH":
+                                titleSnipit = "bathurst";
+                                break;
+                            case "MIRA":
+                                titleSnipit = "miramichi";
+                                break;
                         }
-                        break; //end tournament endpoint
+                        boolean found = false;
+                        String tourneyName = "";
+                        for(int i = 0; i < jsonArray.length() && !found; i++){
+                            jsonObject = jsonArray.getJSONObject(i);
+                            tourneyName = jsonObject.getString("name");
+                            if(tourneyName.contains(titleSnipit)){
+                                apiBoi.TOURNAMENT = tourneyName;
+                                apiBoi.tournamentId = jsonObject.getString("id");
+                                found = true;
+                            }
+                        }
+                        break; //end findTournamentName method
 
-                    case "match":
+
+                    case "checkTournamentStarted":
+                        jsonObject = reader.getJSONObject(endPoint);
+                        String started = jsonObject.getString("state");
+                        if(started.equalsIgnoreCase("underway")){
+                            tournamentStarted = true;
+                            //TODO: now we can show their next match
+                        }
+
+                        break; // end checkTournamentStarted method
+                    case "viewBracket":
+                        //URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
+                        //Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        //imageView.setImageBitmap(bmp);
+
+                        break;
+
+                    // MATCH METHODS
+
+                    case "getMatches":
                         //for seeing upcoming matches, reporting scores, etc.
                         //these methods will only be called if the tournament has started
                         jsonArray = new JSONArray(json);
-                        boolean found = false;
+                        found = false;
                         String player1Id;
                         String player2Id;
                         for(int i = 0; i < jsonArray.length() && !found; i++){
@@ -164,22 +171,19 @@ public class MainActivity extends AppCompatActivity {
                             player1Id = jsonObject.getString("player1_id");
                             player2Id = jsonObject.getString("player2_id");
                             if(player1Id.equalsIgnoreCase(participantID + "")
-                            || player2Id.equalsIgnoreCase(participantID + "")){
+                                    || player2Id.equalsIgnoreCase(participantID + "")){
                                 found = true;
                                 //determine what round (ex: losers R1, wieners semis)
                             }
                         }
                         if(!found)
                             //Log.d()
-                        break;
+                            break;
+                }
 
-                    default:
-                        throw new IllegalStateException("Unexpected endPoint in onReceive: " + endPoint);
-                } //end switch on endpoint
             } catch (JSONException e) { //whole thing in try block because json
                 e.printStackTrace();
             }
-
         }
     };
 
@@ -253,10 +257,6 @@ public class MainActivity extends AppCompatActivity {
                 apiBoi.getTournamentByName("viewBracket");
             }
         });
-
-        //URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
-        //Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        //imageView.setImageBitmap(bmp);
     }
 
     protected void onResume(){
