@@ -14,7 +14,7 @@ public class ApiHandler{
     //hardcoding like this is kind of WeirdChamp
     private final String API_KEY = "IzljIdLTolMZsQBWFYlkCCB16u4ES8T3u20IRMbZ";
     private final String BASEURL = "https://api.challonge.com/v1/";
-    private String TOURNAMENT = "DicksBroLOL";
+    public String TOURNAMENT = "DicksBroLOL";
 
     public ApiHandler(Context main, String city){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
@@ -25,7 +25,7 @@ public class ApiHandler{
 
         //look at pending tournaments created within the last day
         //and find name base on city
-        findTournamentName(main, city, yestString);
+        //findTournamentName(main, city, yestString);
     }
 
     public void addParticipant(Context main, String name){
@@ -33,8 +33,9 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(main, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
+        apiIntent.putExtra("endPoint", "participant");
         apiIntent.putExtra("method", "POST");
-        apiIntent.putExtra("json", true);
+        apiIntent.putExtra("expectJson", true);
         main.startService(apiIntent);
     }
 
@@ -43,6 +44,7 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(main, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
+        apiIntent.putExtra("endPoint", "participant");
         apiIntent.putExtra("method", "POST");
         main.startService(apiIntent);
     }
@@ -54,8 +56,9 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(main, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
+        apiIntent.putExtra("endPoint", "tournament");
         apiIntent.putExtra("method", "GET");
-        apiIntent.putExtra("json", true);
+        apiIntent.putExtra("expectJson", true);
         main.startService(apiIntent);
         //TODO: get back json and game tournament names until it matches the right one for the city
         //use switch to set search string
@@ -66,8 +69,9 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(main, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
-        apiIntent.putExtra("type", "GET");
-        apiIntent.putExtra("json", true);
+        apiIntent.putExtra("endPoint", "tournament");
+        apiIntent.putExtra("method", "GET");
+        apiIntent.putExtra("expectJson", true);
         main.startService(apiIntent);
     }
 

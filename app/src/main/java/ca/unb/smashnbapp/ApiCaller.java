@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -41,21 +42,25 @@ public class ApiCaller extends IntentService {
         StringBuilder json = new StringBuilder();
         json.append("");
         String request = intent.getStringExtra("requestUrl");
+        String method = intent.getStringExtra("method");
+        String endPoint = intent.getStringExtra("endPoint");
+        boolean expectJson = intent.getBooleanExtra("expectJson", false);
         try {
             URL url = new URL(request);
             conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(intent.getStringExtra("method"));
+            conn.setRequestMethod(method);
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
             responseCode = conn.getResponseCode();
 
-            if (intent.getBooleanExtra("json", false)) {
+            if (expectJson) {
                 InputStream in = new BufferedInputStream((conn.getInputStream()));
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 String line;
                 while((line = reader.readLine()) != null){
                     json.append(line);
                 }
+                sendBroadcast(endPoint, method, responseCode, json.toString());
             }
         }
         catch (IOException e){
@@ -66,5 +71,13 @@ public class ApiCaller extends IntentService {
         }
         String[] output = {"" + responseCode, json.toString()};
         return output;
+    }
+
+    private void sendBroadcast (String endPoint, String method, int responseCode, String json){
+        Intent intent = new Intent ("message"); //put the same message as in the filter you used in the activity when registering the receiver
+        intent.putExtra("endPoint", endPoint);
+        intent.putExtra("method", method);
+        intent.putExtra("json", json);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

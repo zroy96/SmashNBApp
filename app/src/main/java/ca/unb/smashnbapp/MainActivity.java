@@ -2,8 +2,10 @@ package ca.unb.smashnbapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -17,11 +19,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.os.Looper;
 import android.provider.Settings;
@@ -33,11 +37,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     private boolean enteredTournament = false; //set to true to prevent location from being updated while gamering
     private long UPDATE_INTERVAL = 5 * 1000;
     private long FASTEST_INTERVAL = 2000;
     private final int PERMISSION_ID = 69;
+    private int participantID;
 
     private final Location FREDERICTON = new Location("ur mom");
     private final Location MONCTON = new Location("ur mom");
@@ -57,6 +65,53 @@ public class MainActivity extends AppCompatActivity {
 
     private LocationCallback mLocationCallback;
 
+    private BroadcastReceiver bReceiver = new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("onReceive", "Broadcast Received");
+            int responseCode = intent.getIntExtra("responseCode", 0);
+            String endPoint = intent.getStringExtra("endPoint");
+            String method = intent.getStringExtra("method");
+            String json = intent.getStringExtra("json");
+
+            JSONObject reader;
+            JSONObject object;
+
+            try {
+                reader = new JSONObject(json);
+                object = reader.getJSONObject(endPoint);
+                switch(endPoint)
+                {
+                    case "participant": {
+                        if(method.equalsIgnoreCase("post")) {
+                            //need to get participant id
+                            participantID = Integer.parseInt(object.getString("id"));
+                            Log.d("partcipantID", "" + participantID);
+                        }
+                        else if(method.equalsIgnoreCase("get")){
+                            //get whatever
+                        }
+                        break;
+                    }
+
+                    case "tournament":{
+                        //TODO: need to distinguish between get 1 and get all
+                        break;
+                    }
+
+                    //add other endpoints if need (ex: match)
+
+                    default:
+                        throw new IllegalStateException("Unexpected endPoint in onReceive: " + endPoint);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        apiBoi.addParticipant(this, "TESTPARTICIPANT1");
+        apiBoi.addParticipant(this, "57577587587587");
 
         fusedLocClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -91,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        getLastLocation();
+        //getLastLocation();
 
         Button cityButton = findViewById(R.id.cityButton);
         cityText = findViewById(R.id.cityTextView);
@@ -107,12 +162,12 @@ public class MainActivity extends AppCompatActivity {
         */
 
         //REGISTER PARTICIPANT FEATURE
-        final TextInputEditText tagInput = findViewById(R.id.tagInput);
+        final TextInputEditText tagInput = findViewById(R.id.tagInputText);
         Button signUpButton = findViewById(R.id.signUpButton);
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tag = String.valueOf(tagInput.getText());
+                String tag = String.valueOf(tagInput);
                 Log.d("TAG111", "tag?" + tag);
                 apiBoi.addParticipant(MainActivity.this, tag);
             }
@@ -131,6 +186,16 @@ public class MainActivity extends AppCompatActivity {
         //URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
         //Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
         //imageView.setImageBitmap(bmp);
+    }
+
+    protected void onResume(){
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(bReceiver, new IntentFilter("message"));
+    }
+
+    protected void onPause (){
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(bReceiver);
     }
 
     @Override
