@@ -38,6 +38,7 @@ public class ApiHandler{
         apiIntent.putExtra("requestUrl", request);
         apiIntent.putExtra("endPoint", "participant");
         apiIntent.putExtra("type", "POST");
+        apiIntent.putExtra("method", "addParticipant");
         apiIntent.putExtra("expectJson", true);
         appContext.startService(apiIntent);
     }
@@ -49,6 +50,7 @@ public class ApiHandler{
         apiIntent.putExtra("requestUrl", request);
         apiIntent.putExtra("endPoint", "participant");
         apiIntent.putExtra("type", "GET");
+        apiIntent.putExtra("method", "getParticipant");
         apiIntent.putExtra("expectJson", true);
         appContext.startService(apiIntent);
     }
