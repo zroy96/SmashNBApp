@@ -94,20 +94,16 @@ public class MainActivity extends AppCompatActivity {
                     // PARTICIPANT METHODS
 
                     case "addParticipant":
+                        //Participant > Create
                         jsonObject = reader.getJSONObject(endPoint);
-                        if(type.equalsIgnoreCase("post")) {
-                            //need to get participant id
-                            participantID = Integer.parseInt(jsonObject.getString("id"));
-                            Log.d("partcipantID", "" + participantID);
-                        }
-                        else if(type.equalsIgnoreCase("get")){
-                            //get whatever
-                        }
+                        participantID = Integer.parseInt(jsonObject.getString("id"));
+                        Log.d("partcipantID", "" + participantID);
                         break;
 
                     // TOURNAMENT METHODS
 
                     case "findTournamentName":
+                        //Tournament > Index
                         jsonArray = new JSONArray(json);
                         String titleSnipit = "";
                         switch(currentCity) {
@@ -142,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     case "checkTournamentStarted":
+                        //Tournament > Show
                         jsonObject = reader.getJSONObject(endPoint);
                         String started = jsonObject.getString("state");
                         if(started.equalsIgnoreCase("underway")){
@@ -151,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
                         break; // end checkTournamentStarted method
                     case "viewBracket":
+                        //Tournament > Show
                         //URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
                         //Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                         //imageView.setImageBitmap(bmp);
@@ -160,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     // MATCH METHODS
 
                     case "getMatches":
+                        //Match > Index
                         //for seeing upcoming matches, reporting scores, etc.
                         //these methods will only be called if the tournament has started
                         jsonArray = new JSONArray(json);
