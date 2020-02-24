@@ -34,7 +34,7 @@ public class ApiCaller extends IntentService {
 
         //TODO: put this data somewhere, maybe some intent result stuff
         Log.d("API CALLER RESPONSE: ", response[0]);
-        Log.d("JSON RECEIVED: ", weGotJSON);
+        Log.d("JSON RECEIVED? : ", weGotJSON);
     }
 
     public String[] makeCall(){
@@ -43,12 +43,13 @@ public class ApiCaller extends IntentService {
         json.append("");
         String request = intent.getStringExtra("requestUrl");
         String method = intent.getStringExtra("method");
+        String type = intent.getStringExtra("type");
         String endPoint = intent.getStringExtra("endPoint");
         boolean expectJson = intent.getBooleanExtra("expectJson", false);
         try {
             URL url = new URL(request);
             conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(method);
+            conn.setRequestMethod(type);
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
             responseCode = conn.getResponseCode();
