@@ -78,7 +78,7 @@ public class ApiHandler{
         apiIntent.putExtra("method", "findTournamentName");
         apiIntent.putExtra("expectJson", true);
         appContext.startService(apiIntent);
-}
+    }
 
     public void getTournamentByName(String method){
         String request = BASEURL + "tournaments/" + TOURNAMENT + ".json" + "?api_key=" + API_KEY;

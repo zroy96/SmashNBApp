@@ -50,12 +50,12 @@ public class ApiCaller extends IntentService {
             URL url = new URL(request);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(type);
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
+            conn.setConnectTimeout(6*1000);
+            conn.setReadTimeout(6*1000);
             responseCode = conn.getResponseCode();
 
             if (expectJson) {
-                InputStream in = new BufferedInputStream((conn.getInputStream()));
+                InputStream in = new BufferedInputStream((conn.getInputStream())); //here we catch a FileNotFoundException when the response code != 200, kinda weirdchamp ngl
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 String line;
                 while((line = reader.readLine()) != null){
