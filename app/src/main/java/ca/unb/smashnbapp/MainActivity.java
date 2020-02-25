@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                                 apiBoi.tournamentId = jsonObject.getString("id");
                                 apiBoi.tournamentUrl = jsonObject.getString("url");
                                 TextView tournamentNameText = (TextView)findViewById(R.id.tournamentName);
-                                tournamentNameText.setText("tourneyName");
+                                tournamentNameText.setText(tourneyName);
                                 found = true;
                             }
                         }
@@ -153,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
                             TextView tournamentStartedText = (TextView)findViewById(R.id.tournamentStarted);
                             tournamentStartedText.setText("tournament started");
                             //TODO: now we can show their next match
-                            apiBoi.getMatches();
+                            //apiBoi.getMatches(); TODO
+                            apiBoi.updateScore("191437058", 1, 3, 0);
                         }
 
                         break; // end checkTournamentStarted method
