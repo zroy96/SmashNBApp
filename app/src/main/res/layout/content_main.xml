@@ -54,7 +54,6 @@
         android:id="@+id/tagInput"
         android:layout_width="354dp"
         android:layout_height="62dp"
-        android:hint="TAG"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -63,7 +62,7 @@
             android:id="@+id/tagInputText"
             android:layout_width="match_parent"
             android:layout_height="41dp"
-            android:hint="hint" />
+            android:hint="Tag" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -76,12 +76,10 @@ public class MainActivity extends AppCompatActivity {
             Log.d("onReceive", "Broadcast Received");
             int responseCode = intent.getIntExtra("responseCode", 0);
             String endPoint = intent.getStringExtra("endPoint");
-            String type = intent.getStringExtra("type");
             String method = intent.getStringExtra("method");
             String json = intent.getStringExtra("json");
             Log.d("responseCode: ", "" + responseCode);
             Log.d("endPoint: ", endPoint);
-            Log.d("type: ", type);
 
             JSONObject reader;
             JSONObject jsonObject;
@@ -193,8 +191,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        apiBoi.addParticipant("57577587587587");
-
         fusedLocClient = LocationServices.getFusedLocationProviderClient(this);
 
         FREDERICTON.setLatitude(45.963337);
@@ -241,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tag = String.valueOf(tagInput);
+                String tag = String.valueOf(tagInput.getText());
                 Log.d("TAG111", "tag?" + tag);
                 apiBoi.addParticipant(tag);
             }
