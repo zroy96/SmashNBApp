@@ -110,7 +110,7 @@ public class ApiHandler{
         getTournamentByName("checkTournamentStarted");
     }
 
-    public void getMatches(String tournamentId){
+    public void getMatches(){
         String request = BASEURL + "tournaments/" + tournamentId + "/matches.json" + "?api_key=" + API_KEY;
         Intent apiIntent = new Intent();
         apiIntent.setClass(appContext, ApiCaller.class);
