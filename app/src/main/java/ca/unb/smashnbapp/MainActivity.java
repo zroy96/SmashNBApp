@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private long FASTEST_INTERVAL = 2000;
     private final int PERMISSION_ID = 69;
     private int participantID;
+    private int playerNum = 0;
 
     private final Location FREDERICTON = new Location("ur mom");
     private final Location MONCTON = new Location("ur mom");
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         //Participant > Create
                         jsonObject = reader.getJSONObject(endPoint);
                         participantID = Integer.parseInt(jsonObject.getString("id"));
-                        Log.d("partcipantID", "" + participantID);
+                        Log.d("participantID", "" + participantID);
                         break;
 
                     // TOURNAMENT METHODS
@@ -127,8 +128,9 @@ public class MainActivity extends AppCompatActivity {
                             jsonObject = jsonArray.getJSONObject(i).getJSONObject("tournament");
                             tourneyName = jsonObject.getString("name");
                             if(tourneyName.contains(titleSnipit)){
-                                apiBoi.TOURNAMENT = tourneyName;
+                                apiBoi.tournamentName = tourneyName;
                                 apiBoi.tournamentId = jsonObject.getString("id");
+                                apiBoi.tournamentUrl = jsonObject.getString("url");
                                 TextView tournamentNameText = (TextView)findViewById(R.id.tournamentName);
                                 tournamentNameText.setText("tourneyName");
                                 found = true;
@@ -172,9 +174,16 @@ public class MainActivity extends AppCompatActivity {
                             jsonObject = jsonArray.getJSONObject(i).getJSONObject("match");
                             player1Id = jsonObject.getString("player1_id");
                             player2Id = jsonObject.getString("player2_id");
-                            if(player1Id.equalsIgnoreCase(participantID + "")
-                                    || player2Id.equalsIgnoreCase(participantID + "")){
+                            if(player1Id.equalsIgnoreCase(participantID + "")) {
+                                playerNum = 1;
                                 found = true;
+                            }
+                            else if(player2Id.equalsIgnoreCase(participantID + "")){
+                                playerNum = 2;
+                                found = true;
+
+                            }
+                            if(found) {
                                 //determine what round (ex: losers R1, wieners semis)
                             }
                         }
