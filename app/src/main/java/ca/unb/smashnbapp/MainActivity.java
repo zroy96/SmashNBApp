@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -34,12 +36,15 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     private boolean enteredTournament = false; //set to true to prevent location from being updated while gamering
@@ -75,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("onReceive", "Broadcast Received");
-            int responseCode = intent.getIntExtra("responseCode", 0);
+            int responseCode = intent.getIntExtra("responseCode", -1);
             String endPoint = intent.getStringExtra("endPoint");
             String method = intent.getStringExtra("method");
             String json = intent.getStringExtra("json");
@@ -152,11 +157,25 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         break; // end checkTournamentStarted method
+
                     case "viewBracket":
                         //Tournament > Show
-                        //URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
-                        //Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                        //imageView.setImageBitmap(bmp);
+                        jsonObject = reader.getJSONObject(endPoint);
+                        try {
+                            //BROWSER VERSION
+                            URL url = new URL(jsonObject.getString("live_image_url"));
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.valueOf(url)));
+                            startActivity(browserIntent);
+                            // TODO BITMAP VERSION cant get this imageview to be visible
+                            /*Bitmap bmp = intent.getParcelableExtra("bitmap");
+                            ImageView bracketView = findViewById(R.id.bracketViewID);
+                            bracketView.setImageBitmap(bmp);
+                            bracketView.setVisibility(View.VISIBLE);
+                            */
+                        }
+                        catch(Exception e){
+                            Log.d("View Bracket", "that didn't fuckin work now did it?", e);
+                        }
 
                         break;
 
