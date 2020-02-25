@@ -156,16 +156,16 @@ public class MainActivity extends AppCompatActivity {
                         //Tournament > Show
                         jsonObject = reader.getJSONObject(endPoint);
                         try {
+                            //BROWSER VERSION
                             URL url = new URL(jsonObject.getString("live_image_url"));
                             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.valueOf(url)));
                             startActivity(browserIntent);
-                            
+                            // TODO BITMAP VERSION cant get this imageview to be visible
                             /*Bitmap bmp = intent.getParcelableExtra("bitmap");
                             ImageView bracketView = findViewById(R.id.bracketViewID);
                             bracketView.setImageBitmap(bmp);
                             bracketView.setVisibility(View.VISIBLE);
                             */
-
                         }
                         catch(Exception e){
                             Log.d("View Bracket", "that didn't fuckin work now did it?", e);
