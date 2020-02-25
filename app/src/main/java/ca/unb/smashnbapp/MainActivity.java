@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private final Location MIRAMICHI = new Location("ur mom");
     private final Location BATHURST = new Location("ur mom");
 
-    final ApiHandler apiBoi = new ApiHandler(this, "Fredericton");
+    final ApiHandler apiBoi = new ApiHandler(this);
 
     private String currentCity = "FRED"; //default for now
 
@@ -81,12 +81,11 @@ public class MainActivity extends AppCompatActivity {
             Log.d("responseCode: ", "" + responseCode);
             Log.d("endPoint: ", endPoint);
 
-            JSONObject reader;
-            JSONObject jsonObject;
-            JSONArray jsonArray;
 
             try {
-                reader = new JSONObject(json);
+                JSONObject reader = new JSONObject(json);
+                JSONObject jsonObject;
+                JSONArray jsonArray;
                 switch(method){
 
                     // PARTICIPANT METHODS
@@ -123,12 +122,15 @@ public class MainActivity extends AppCompatActivity {
                         }
                         boolean found = false;
                         String tourneyName = "";
+                        Log.d("onReceieve titlesnipit", titleSnipit);
                         for(int i = 0; i < jsonArray.length() && !found; i++){
-                            jsonObject = jsonArray.getJSONObject(i);
+                            jsonObject = jsonArray.getJSONObject(i).getJSONObject("tournament");
                             tourneyName = jsonObject.getString("name");
                             if(tourneyName.contains(titleSnipit)){
                                 apiBoi.TOURNAMENT = tourneyName;
                                 apiBoi.tournamentId = jsonObject.getString("id");
+                                TextView tournamentNameText = (TextView)findViewById(R.id.tournamentName);
+                                tournamentNameText.setText("tourneyName");
                                 found = true;
                             }
                         }
@@ -141,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
                         String started = jsonObject.getString("state");
                         if(started.equalsIgnoreCase("underway")){
                             tournamentStarted = true;
+                            TextView tournamentStartedText = (TextView)findViewById(R.id.tournamentStarted);
+                            tournamentStartedText.setText("tournament started");
                             //TODO: now we can show their next match
                             apiBoi.getMatches();
                         }
@@ -165,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                         String player1Id;
                         String player2Id;
                         for(int i = 0; i < jsonArray.length() && !found; i++){
-                            jsonObject = jsonArray.getJSONObject(i);
+                            jsonObject = jsonArray.getJSONObject(i).getJSONObject("match");
                             player1Id = jsonObject.getString("player1_id");
                             player2Id = jsonObject.getString("player2_id");
                             if(player1Id.equalsIgnoreCase(participantID + "")
@@ -177,6 +181,9 @@ public class MainActivity extends AppCompatActivity {
                         if(!found)
                             //Log.d()
                             break;
+
+                        default:
+                            Log.d("onReceive", "Method not found in switch cases");
                 }
 
             } catch (JSONException e) { //whole thing in try block because json
@@ -232,6 +239,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
+
+        TextView tournamentStartedText = (TextView)findViewById(R.id.tournamentStarted);
+        tournamentStartedText.setText("tournament not started");
+
+        apiBoi.findTournamentName(apiBoi.yesterdayDate);
+
+        Button checkStartedButton = (Button)findViewById(R.id.checkStart);
+        checkStartedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!tournamentStarted)
+                    apiBoi.checkTournamentStarted();
+            }
+        });
+
 
         //REGISTER PARTICIPANT FEATURE
         final TextInputEditText tagInput = findViewById(R.id.tagInputText);

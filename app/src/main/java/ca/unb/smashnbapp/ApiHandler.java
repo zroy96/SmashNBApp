@@ -2,6 +2,7 @@ package ca.unb.smashnbapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,18 +18,16 @@ public class ApiHandler{
     public String TOURNAMENT = "DicksBroLOL";
     public String tournamentId = "";
     private Context appContext;
+    public String yesterdayDate;
 
-    public ApiHandler(Context main, String city){
+    public ApiHandler(Context main){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         Date yest = cal.getTime();
-        String yestString = dateFormat.format(yest);
+        yesterdayDate = dateFormat.format(yest);
+        yesterdayDate = "2020-02-21";
         appContext = main;
-
-        //look at pending tournaments created within the last day
-        //and find name base on city
-        //findTournamentName(main, city, yestString);
     }
 
     public void addParticipant(String name){
@@ -66,8 +65,9 @@ public class ApiHandler{
         appContext.startService(apiIntent);
     }
 
-    public void findTournamentName(String city, String date)
+    public void findTournamentName(String date)
     {
+        Log.d("findTournamentName", "called");
         String request = BASEURL + "tournaments.json" + "?api_key=" + API_KEY
                 + "&state=pending&created_after=" + date;
         Intent apiIntent = new Intent();
