@@ -2,10 +2,14 @@ package ca.unb.smashnbapp;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -18,7 +22,8 @@ import java.net.URL;
 public class ApiCaller extends IntentService {
 
     private Intent intent;
-    HttpURLConnection conn;
+    private HttpURLConnection conn;
+    Bitmap bmp;
 
     public ApiCaller() {
         super("I DONT KNOW WHY I NEED THIS STRING");
@@ -61,9 +66,26 @@ public class ApiCaller extends IntentService {
                 while((line = reader.readLine()) != null){
                     json.append(line);
                 }
+
+                if(method.equals("viewBracket")){
+                    try {
+                        JSONObject jsnreader = new JSONObject(json.toString());
+                        JSONObject jsnobjct = jsnreader.getJSONObject("tournament");
+                        URL image_url = new URL(jsnobjct.getString("live_image_url"));
+                        bmp = BitmapFactory.decodeStream(image_url.openConnection().getInputStream());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 sendBroadcast(endPoint, method, responseCode, json.toString());
+
+
+
             }
+
         }
+
         catch (IOException e){
             Log.d("API_CALLER_ERROR", "makeCall failure", e);
         }
@@ -78,7 +100,9 @@ public class ApiCaller extends IntentService {
         Intent intent = new Intent ("message"); //put the same message as in the filter you used in the activity when registering the receiver
         intent.putExtra("endPoint", endPoint);
         intent.putExtra("method", method);
+        intent.putExtra("responseCode", responseCode);
         intent.putExtra("json", json);
+        intent.putExtra("bitmap", bmp);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }
