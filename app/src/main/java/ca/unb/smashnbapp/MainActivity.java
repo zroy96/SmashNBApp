@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                         if(started.equalsIgnoreCase("underway")){
                             tournamentStarted = true;
                             //TODO: now we can show their next match
+                            apiBoi.getMatches();
                         }
 
                         break; // end checkTournamentStarted method
@@ -191,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
         fusedLocClient = LocationServices.getFusedLocationProviderClient(this);
 
         FREDERICTON.setLatitude(45.963337);
