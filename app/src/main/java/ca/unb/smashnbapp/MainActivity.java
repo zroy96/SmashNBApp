@@ -271,7 +271,10 @@ public class MainActivity extends AppCompatActivity {
         TextView tournamentStartedText = (TextView)findViewById(R.id.tournamentStarted);
         tournamentStartedText.setText("tournament not started");
 
-        apiBoi.findTournamentName(apiBoi.yesterdayDate);
+        //apiBoi.findTournamentName(apiBoi.yesterdayDate); TODO
+
+        TextView tournamentNameText = (TextView)findViewById(R.id.tournamentName);
+        tournamentNameText.setText(apiBoi.tournamentName);
 
         Button checkStartedButton = (Button)findViewById(R.id.checkStart);
         checkStartedButton.setOnClickListener(new View.OnClickListener() {
