@@ -129,7 +129,8 @@ public class ApiHandler{
         else
             score = "" + opponentScore + "-" + playerScore;
 
-        String request = BASEURL + "tournaments/" + tournamentId + "/matches/" + matchId + ".json?api_key=" + API_KEY;
+        String request = BASEURL + "tournaments/" + tournamentId + "/matches/" + matchId + ".json?api_key=" + API_KEY
+                + "&match[scores_csv]=" + score;
         Intent apiIntent = new Intent();
         apiIntent.setClass(appContext, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
