@@ -80,4 +80,13 @@
         app:srcCompat="@drawable/common_full_open_on_phone"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
+    <TextView
+        android:id="@+id/tournamentStarted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
