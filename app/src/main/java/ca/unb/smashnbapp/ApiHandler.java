@@ -13,9 +13,9 @@ public class ApiHandler{
     //hardcoding like this is kind of WeirdChamp
     private final String API_KEY = "IzljIdLTolMZsQBWFYlkCCB16u4ES8T3u20IRMbZ";
     private final String BASEURL = "https://api.challonge.com/v1/";
-    public String tournamentUrl = "hvn680y0"; //url
-    public String tournamentId = "8138483";
-    public String tournamentName = "The guard 111111";
+    public String tournamentUrl = ""; //"hvn680y0"; //url
+    public String tournamentId = "";//"8138483";
+    public String tournamentName = "NAME";//"The guard 111111";
     private Context appContext;
     public String yesterdayDate;
 
