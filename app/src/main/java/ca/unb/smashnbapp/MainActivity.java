@@ -90,13 +90,16 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 JSONObject reader = new JSONObject(json);
+                /*
                 JSONObject jsonObject;
                 JSONArray jsonArray;
+                boolean found = false;
                 switch(method){
 
                     // PARTICIPANT METHODS
 
                     case "addParticipant":
+
                         //Participant > Create
                         jsonObject = reader.getJSONObject(endPoint);
                         participantID = Integer.parseInt(jsonObject.getString("id"));
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                                 titleSnipit = "miramichi";
                                 break;
                         }
-                        boolean found = false;
+                        found = false;
                         String tourneyName = "";
                         Log.d("onReceieve titlesnipit", titleSnipit);
                         for(int i = 0; i < jsonArray.length() && !found; i++){
@@ -141,9 +144,11 @@ public class MainActivity extends AppCompatActivity {
                                 found = true;
                             }
                         }
-                        break; //end findTournamentName method
 
+                        */
+                        //break; //end findTournamentName method
 
+                    /*
                     case "checkTournamentStarted":
                         //Tournament > Show
                         jsonObject = reader.getJSONObject(endPoint);
@@ -172,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                             ImageView bracketView = findViewById(R.id.bracketViewID);
                             bracketView.setImageBitmap(bmp);
                             bracketView.setVisibility(View.VISIBLE);
-                            */
+
                         }
                         catch(Exception e){
                             Log.d("View Bracket", "that didn't fuckin work now did it?", e);
@@ -210,10 +215,10 @@ public class MainActivity extends AppCompatActivity {
                         if(!found)
                             //Log.d()
                         break;
-
-                        default:
-                            Log.d("onReceive", "Method not found in switch cases");
-                }
+                        */
+                       // default:
+                          //  Log.d("onReceive", "Method not found in switch cases");
+               // }
 
             } catch (JSONException e) { //whole thing in try block because json
                 e.printStackTrace();
@@ -272,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tournamentStartedText = (TextView)findViewById(R.id.tournamentStarted);
         tournamentStartedText.setText("tournament not started");
 
-        //apiBoi.findTournamentName(apiBoi.yesterdayDate); TODO
+        apiBoi.findTournamentName(apiBoi.yesterdayDate);
 
         TextView tournamentNameText = (TextView)findViewById(R.id.tournamentName);
         tournamentNameText.setText(apiBoi.tournamentName);
@@ -306,6 +311,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 apiBoi.getTournamentByName("viewBracket");
+            }
+        });
+
+        //VIEW NOTES
+        final Button notesButton = findViewById(R.id.noteButton);
+        notesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent noteIntent = new Intent(MainActivity.this, NoteTakingActivity.class);
+                noteIntent.putExtra("filename", "general");
+                startActivity(noteIntent);
             }
         });
     }
