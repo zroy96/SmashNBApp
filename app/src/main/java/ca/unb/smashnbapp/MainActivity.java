@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if(!found)
                             //Log.d()
-                            break;
+                        break;
 
                         default:
                             Log.d("onReceive", "Method not found in switch cases");
