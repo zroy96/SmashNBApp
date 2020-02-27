@@ -14,7 +14,8 @@
         android:layout_height="275dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/signUpButton"
-        tools:layout_editor_absoluteX="29dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -124,24 +125,13 @@
         android:layout_marginBottom="24dp"
         android:text="Tournament Name"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout3" />
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout3" /><![CDATA[
 
-    <TextView
-        android:id="@+id/nextOpponent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginBottom="12dp"
-        android:text="Tournament Name"
-        app:layout_constraintBottom_toTopOf="@+id/checkStart"
-        app:layout_constraintEnd_toStartOf="@+id/tournamentStarted"
-        app:layout_constraintHorizontal_bias="0.086"
-        app:layout_constraintStart_toStartOf="parent" />
-
-        android:layout_marginStart="52dp"
+    android:layout_marginStart="52dp"
         android:layout_marginBottom="24dp"
         android:text="Next Opponent"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintStart_toStartOf="@+id/linearLayout3" />
 
+]]>
 </androidx.constraintlayout.widget.ConstraintLayout>

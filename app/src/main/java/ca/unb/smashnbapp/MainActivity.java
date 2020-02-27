@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 JSONObject reader = new JSONObject(json);
-                /*
+
                 JSONObject jsonObject;
                 JSONArray jsonArray;
                 boolean found = false;
@@ -145,10 +145,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
 
-                        */
-                        //break; //end findTournamentName method
+                        break; //end findTournamentName method
 
-                    /*
+
                     case "checkTournamentStarted":
                         //Tournament > Show
                         jsonObject = reader.getJSONObject(endPoint);
@@ -177,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                             ImageView bracketView = findViewById(R.id.bracketViewID);
                             bracketView.setImageBitmap(bmp);
                             bracketView.setVisibility(View.VISIBLE);
-
+                            */
                         }
                         catch(Exception e){
                             Log.d("View Bracket", "that didn't fuckin work now did it?", e);
@@ -214,10 +213,8 @@ public class MainActivity extends AppCompatActivity {
                         if(!found)
                             //Log.d()
                         break;
-                        */
-                       // default:
-                          //  Log.d("onReceive", "Method not found in switch cases");
-               // }
+                        default: Log.d("onReceive", "Method not found in switch cases");
+                }
 
             } catch (JSONException e) { //whole thing in try block because json
                 e.printStackTrace();
