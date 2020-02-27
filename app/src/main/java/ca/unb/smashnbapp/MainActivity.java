@@ -200,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
                             else if(player2Id.equalsIgnoreCase(participantID + "")){
                                 playerNum = 2;
                                 found = true;
-
                             }
                             if(found) {
                                 //determine what round (ex: losers R1, wieners semis)
