@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent noteIntent = new Intent(MainActivity.this, NoteTakingActivity.class);
-                noteIntent.putExtra("filename", "general");
+                noteIntent.putExtra("filename", "SamusMaster44");
                 startActivity(noteIntent);
             }
         });
