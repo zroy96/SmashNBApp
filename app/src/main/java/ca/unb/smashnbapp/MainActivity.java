@@ -198,11 +198,16 @@ public class MainActivity extends AppCompatActivity {
         TextView tournamentStartedText = (TextView)findViewById(R.id.tournamentStarted);
         tournamentStartedText.setText("tournament not started");
 
-        apiBoi.findTournamentName(apiBoi.yesterdayDate);
 
-        TextView tournamentNameText = (TextView)findViewById(R.id.tournamentName);
-        tournamentNameText.setText(apiBoi.tournamentName);
 
+        /////////////////////////////////////////////////
+        /////////////////////////////////////////////////
+        /////////////////////////////////////////////////
+        /////////////////////////////////////////////////   BUTTONS
+
+
+
+        //CHECK START BUTTON
         Button checkStartedButton = (Button)findViewById(R.id.checkStart);
         checkStartedButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,8 +217,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        //REGISTER PARTICIPANT FEATURE
+        //REGISTER PARTICIPANT BUTTON
         final TextInputEditText tagInput = findViewById(R.id.tagInputText);
         Button signUpButton = findViewById(R.id.signUpButton);
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -225,8 +229,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        //VIEW TOURNAMENT FEATURE
+        //VIEW TOURNAMENT BUTTON
         Button showBracketButton = findViewById(R.id.showBracketButton);
         showBracketButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //VIEW NOTES
+        //VIEW NOTES BUTTON
         final Button notesButton = findViewById(R.id.noteButton);
         notesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,6 +246,27 @@ public class MainActivity extends AppCompatActivity {
                 Intent noteIntent = new Intent(MainActivity.this, NoteTakingActivity.class);
                 noteIntent.putExtra("filename", "SamusMaster44");
                 startActivity(noteIntent);
+            }
+        });
+
+        //CHECK FOR NEARBY TOURNAMENT BUTTON
+        Button nearbyTournamentButton = (Button)findViewById(R.id.nearbyTournamentButton);
+        nearbyTournamentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                apiBoi.findTournamentName(apiBoi.yesterdayDate);
+                TextView tournamentNameText = (TextView)findViewById(R.id.tournamentName);
+                tournamentNameText.setText(apiBoi.tournamentName);
+            }
+        });
+
+        //GET MATCH BUTTON
+        Button nextMatchButton = (Button)findViewById(R.id.getNextMatchButton);
+        nextMatchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String tag = String.valueOf(tagInput.getText());
+                //apiBoi.findMatchWithPlayer(tag);
             }
         });
     }
