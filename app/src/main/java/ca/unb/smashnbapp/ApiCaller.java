@@ -49,7 +49,6 @@ public class ApiCaller extends IntentService {
         String request = intent.getStringExtra("requestUrl");
         String method = intent.getStringExtra("method");
         String type = intent.getStringExtra("type");
-        String endPoint = intent.getStringExtra("endPoint");
         boolean expectJson = intent.getBooleanExtra("expectJson", false);
         try {
             URL url = new URL(request);
@@ -78,7 +77,7 @@ public class ApiCaller extends IntentService {
                     }
                 }
 
-                sendBroadcast(endPoint, method, responseCode, json.toString());
+                sendBroadcast(method, responseCode, json.toString());
 
 
 
@@ -96,9 +95,8 @@ public class ApiCaller extends IntentService {
         return output;
     }
 
-    private void sendBroadcast (String endPoint, String method, int responseCode, String json){
+    private void sendBroadcast (String method, int responseCode, String json){
         Intent intent = new Intent ("message"); //put the same message as in the filter you used in the activity when registering the receiver
-        intent.putExtra("endPoint", endPoint);
         intent.putExtra("method", method);
         intent.putExtra("responseCode", responseCode);
         intent.putExtra("json", json);

@@ -34,7 +34,6 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(appContext, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
-        apiIntent.putExtra("endPoint", "participant");
         apiIntent.putExtra("type", "POST");
         apiIntent.putExtra("method", "addParticipant");
         apiIntent.putExtra("expectJson", true);
@@ -46,7 +45,6 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(appContext, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
-        apiIntent.putExtra("endPoint", "participant");
         apiIntent.putExtra("type", "GET");
         apiIntent.putExtra("method", "getParticipant");
         apiIntent.putExtra("expectJson", true);
@@ -58,7 +56,6 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(appContext, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
-        apiIntent.putExtra("endPoint", "participant");
         apiIntent.putExtra("type", "POST");
         apiIntent.putExtra("method", "randomizeSeeds");
         appContext.startService(apiIntent);
@@ -72,7 +69,6 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(appContext, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
-        apiIntent.putExtra("endPoint", "tournament");
         apiIntent.putExtra("type", "GET");
         apiIntent.putExtra("method", "findTournamentName");
         apiIntent.putExtra("expectJson", true);
@@ -84,7 +80,6 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(appContext, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
-        apiIntent.putExtra("endPoint", "tournament");
         apiIntent.putExtra("type", "GET");
         apiIntent.putExtra("method", method);
         apiIntent.putExtra("expectJson", true);
@@ -97,7 +92,6 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(appContext, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
-        apiIntent.putExtra("endPoint", "tournament");
         apiIntent.putExtra("type", "GET");
         apiIntent.putExtra("method", method);
         apiIntent.putExtra("expectJson", true);
@@ -114,7 +108,6 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(appContext, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
-        apiIntent.putExtra("endPoint", "match");
         apiIntent.putExtra("type", "GET");
         apiIntent.putExtra("method", "getMatches");
         apiIntent.putExtra("expectJson", true);
@@ -134,7 +127,6 @@ public class ApiHandler{
         Intent apiIntent = new Intent();
         apiIntent.setClass(appContext, ApiCaller.class);
         apiIntent.putExtra("requestUrl", request);
-        apiIntent.putExtra("endPoint", "match");
         apiIntent.putExtra("type", "PUT");
         apiIntent.putExtra("method", "updateScore");
         apiIntent.putExtra("expectJson", true);
