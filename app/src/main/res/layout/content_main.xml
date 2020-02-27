@@ -8,16 +8,88 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <Button
-        android:id="@+id/showBracketButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Show Bracket"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="352dp"
+        android:layout_height="275dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/signUpButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:layout_editor_absoluteX="29dp">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="145dp"
+            android:layout_height="253dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="409dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/score"
+                    android:layout_width="118dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Score (2-1)" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/reportScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Report Score" />
+
+            <Button
+                android:id="@+id/noteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Notes" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="131dp"
+            android:layout_height="251dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/checkStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Check Start"
+                app:layout_constraintTop_toBottomOf="@+id/tournamentStarted" />
+
+            <TextView
+                android:id="@+id/tournamentStarted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hasStarted" />
+
+            <Button
+                android:id="@+id/showBracketButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:layout_marginBottom="32dp"
+                android:text="Show Bracket" />
+
+            <ImageView
+                android:id="@+id/bracketViewID"
+                android:layout_width="24dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="108dp"
+                android:contentDescription="bracket image"
+                app:srcCompat="@drawable/common_full_open_on_phone"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/signUpButton"
@@ -44,49 +116,32 @@
             android:hint="Tag" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/bracketViewID"
-        android:layout_width="24dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="108dp"
-        android:contentDescription="bracket image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/common_full_open_on_phone"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-    <TextView
-        android:id="@+id/tournamentStarted"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hasStarted"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkStart"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/checkStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:text="Check Start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tournamentStarted" />
-
     <TextView
         android:id="@+id/tournamentName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="24dp"
+        android:text="Tournament Name"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout3" />
+
+    <TextView
+        android:id="@+id/nextOpponent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
         android:layout_marginBottom="12dp"
         android:text="Tournament Name"
         app:layout_constraintBottom_toTopOf="@+id/checkStart"
         app:layout_constraintEnd_toStartOf="@+id/tournamentStarted"
         app:layout_constraintHorizontal_bias="0.086"
         app:layout_constraintStart_toStartOf="parent" />
+
+        android:layout_marginStart="52dp"
+        android:layout_marginBottom="24dp"
+        android:text="Next Opponent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
